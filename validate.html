@@ -3,13 +3,15 @@
   <body>
     <h2>Validation Example</h2>
 
-    <form ng-app="" ng-controller="validateCtrl" name="myForm" novalidate>
+    <form ng-app="myTest" ng-controller="validateCtrl" name="myForm" novalidate>
+    <!-- <form name="myForm" novalidate> -->
 
       <p>Username:<br>
         <input type="text" name="user" ng-model="user" required>
         <span style="color:red" ng-show="myForm.user.$dirty && myForm.user.$invalid">
           <span ng-show="myForm.user.$error.required">Username is required.</span>
         </span>
+        <span style="color:red" ng-show="myForm.user.$invalid-maxlength">Username is no longer than 5.</span>
       </p>
 
       <p>Email:<br>
@@ -24,15 +26,40 @@
         <input type="submit" ng-disabled="myForm.user.$dirty && myForm.user.$invalid || myForm.email.$dirty && myForm.email.$invalid">
       </p>
 
+      <!-- <p>
+        <input multiple-email name="emails" ng-model="emails" required>
+        {{myForm.emails.$valid}}
+      </p>
+      <button ng-disabled="myForm.$invalid">submit</button> -->
+
     </form>
 
     <script src="js/angular-1-2-28.min.js"></script>
+    <!-- // <script src="js/angular-1-3-8.min.js"></script> -->
 
     <script>
-      function validateCtrl($scope) {
+        var app = angular.module("myTest", []);
+        // app.directive('multipleEmail', [function(){
+        //   return {
+        //     require: "ngModel",
+        //     link: function(scope, element, attr, ngModel){
+        //       if(ngModel){
+        //         var emailsRegexp = /^([a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9-]+(\.[a-z0-9-]+)*[;；]?)+$/i;
+        //       }
+        //       var customValidator = function(value){
+        //         var validity = ngModel.$isEmpty(value) || emailsRegexp.test(value);
+        //         ngModel.$setValidity("multipleEmail", validity);
+        //         return validity ? value : undefined;
+        //       };
+        //       ngModel.$formatters.push(customValidator);
+        //       ngModel.$parsers.push(customValidator);
+        //     }
+        //   };
+        // }]);
+        app.controller("validateCtrl", function validateCtrl($scope) {
           $scope.user = 'John Doe';
           $scope.email = 'john.doe@gmail.com';
-      }
+        });
     </script>
 
   </body>

@@ -2,7 +2,14 @@
 <html lang="en-US">
 	<head>
 		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
 		<title> My AngularJS</title>
+
+		<link rel="stylesheet" href="/Users/Sallymew/Desktop/mygit/test/bootstrap.min.css">
+		<link rel="stylesheet" href="/Users/Sallymew/Desktop/mygit/test/bootstrap-theme.min.css">
+		<!--
 		<style>
 			table, th , td {
 			  border: 1px solid grey;
@@ -16,8 +23,15 @@
 			  background-color: #ffffff;
 			}
 		</style>
+	-->
 	</head>
-	<body>
+	<body ng-app="" ng-controller="userController">
+		<div class="container">
+			<div ng-include="'user_list.html'"></div>
+			<div ng-include="'user_form.html'"></div>			
+		</div>
+
+		<!--
 		<div ng-app="myApp" ng-controller="myController">
 			<form action="" novalidate>
 				First Name:<br><input type="text" ng-model="master.firstName"><br>
@@ -53,37 +67,90 @@
 			</div>
 
 			<button ng-click="toggle()">try</button>
-		</div>
+		</div>-->
 
 		<!-- 先加载angularjs文件 -->
 		<script src="js/angular-1-2-28.min.js"></script>
 		<!-- // <script src="js/angular-1-3-8.min.js"></script> -->
+		<script src="/Users/Sallymew/Desktop/mygit/test/bootstrap.min.js"></script>
 		<script>
-			var app = angular.module("myApp", []);
-			app.controller("myController", function myController($scope) {
-			    $scope.master = {
-			        firstName: "John",
-			        lastName: "Doe",
-			        fullName: function() {//可以动态绑定
-			            var x;
-			            x = $scope.person;
-			            return x.firstName + " " + x.lastName;
-			        }
-			    };
-			    $scope.reset = function(){
-			    	$scope.user = angular.copy($scope.master);
-			    };
-			    // $scope.reset();
-			    $scope.names = [
-			    	{name: 'Sally', country: 'China'},
-			    	{name: 'Tom', country: 'America'},
-			    	{name: 'Saki', country: 'Japan'}    	
-			    ];
-			    $scope.myVar = false;
-			    $scope.toggle = function(){
-			    	$scope.myVar = !$scope.myVar;
-			    };
-			});
+			// var app = angular.module("myApp", []);
+			// app.controller("myController", function myController($scope) {
+			//     $scope.master = {
+			//         firstName: "John",
+			//         lastName: "Doe",
+			//         fullName: function() {//可以动态绑定
+			//             var x;
+			//             x = $scope.person;
+			//             return x.firstName + " " + x.lastName;
+			//         }
+			//     };
+			//     $scope.reset = function(){
+			//     	$scope.user = angular.copy($scope.master);
+			//     };
+			//     // $scope.reset();
+			//     $scope.names = [
+			//     	{name: 'Sally', country: 'China'},
+			//     	{name: 'Tom', country: 'America'},
+			//     	{name: 'Saki', country: 'Japan'}    	
+			//     ];
+			//     $scope.myVar = false;
+			//     $scope.toggle = function(){
+			//     	$scope.myVar = !$scope.myVar;
+			//     };
+			// });
+			function userController($scope) {
+				$scope.fName = '';
+				$scope.lName = '';
+				$scope.passw1 = '';
+				$scope.passw2 = '';
+				$scope.users = [
+					{id:1, fName:'Hege',  lName:"Pege" },
+					{id:2, fName:'Kim',   lName:"Pim" },
+					{id:3, fName:'Sal',   lName:"Smith" },
+					{id:4, fName:'Jack',  lName:"Jones" },
+					{id:5, fName:'John',  lName:"Doe" },
+					{id:6, fName:'Peter', lName:"Pan" }
+				];
+				$scope.show = false;
+				$scope.edit = true;
+				$scope.error = false;
+				$scope.incomplete = false; 
+
+				$scope.editUser = function(id) {
+					$scope.show = true;
+				  if (id == 'new') {
+				    $scope.edit = true;
+				    $scope.incomplete = true;
+				    $scope.fName = '';
+				    $scope.lName = '';
+				    } else {
+				    $scope.edit = false;
+				    $scope.fName = $scope.users[id-1].fName;
+				    $scope.lName = $scope.users[id-1].lName; 
+				  }
+				};
+
+				$scope.$watch('passw1',function() {$scope.test();});
+				$scope.$watch('passw2',function() {$scope.test();});
+				$scope.$watch('fName', function() {$scope.test();});
+				$scope.$watch('lName', function() {$scope.test();});
+
+				$scope.test = function() {
+				  if ($scope.passw1 !== $scope.passw2) {
+				    $scope.error = true;
+				    } else {
+				    $scope.error = false;
+				  }
+				  $scope.incomplete = false;
+				  if ($scope.edit && (!$scope.fName.length ||
+				  !$scope.lName.length ||
+				  !$scope.passw1.length || !$scope.passw2.length)) {
+				       $scope.incomplete = true;
+				  }
+				};
+
+			}
 		</script>
 	</body>
 </html>
